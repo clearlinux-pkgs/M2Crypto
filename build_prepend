@@ -1,0 +1,2 @@
+# Make sure this file is always generated at build time
+rm SWIG/_m2crypto_wrap.c

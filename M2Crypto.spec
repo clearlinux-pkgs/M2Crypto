@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xE09FEF25D96484AC (mcepl@suse.cz)
 #
 Name     : M2Crypto
-Version  : 0.33.0
-Release  : 7
-URL      : https://files.pythonhosted.org/packages/52/e3/85f7ad64cd50b4c361b6533baeaa4d3919087993f24a93b34ae841a42628/M2Crypto-0.33.0.tar.gz
-Source0  : https://files.pythonhosted.org/packages/52/e3/85f7ad64cd50b4c361b6533baeaa4d3919087993f24a93b34ae841a42628/M2Crypto-0.33.0.tar.gz
-Source99 : https://files.pythonhosted.org/packages/52/e3/85f7ad64cd50b4c361b6533baeaa4d3919087993f24a93b34ae841a42628/M2Crypto-0.33.0.tar.gz.asc
+Version  : 0.35.2
+Release  : 8
+URL      : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz
+Source0  : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz
+Source1  : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz.asc
 Summary  : M2Crypto: A Python crypto and SSL toolkit
 Group    : Development/Tools
 License  : MIT MIT-Opengroup
@@ -18,12 +18,17 @@ Requires: M2Crypto-python = %{version}-%{release}
 Requires: M2Crypto-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
 BuildRequires : openssl-dev
+BuildRequires : python3-dev
+BuildRequires : swig
 Patch1: build.patch
-Patch2: rc4.patch
 
 %description
-This directory contains contributions by users of M2Crypto. Some of these
-may get folded into the main distribution in time.
+DH, EC, HMACs, message digests, symmetric ciphers (including AES); SSL
+        functionality to implement clients and servers; HTTPS extensions to Python's
+        httplib, urllib, and xmlrpclib; unforgeable HMAC'ing AuthCookies for web
+        session management; FTP/TLS client and server; S/MIME; M2Crypto can also be
+        used to provide SSL for Twisted. Smartcards supported through the Engine
+        interface.
 
 %package license
 Summary: license components for the M2Crypto package.
@@ -53,16 +58,20 @@ python3 components for the M2Crypto package.
 
 
 %prep
-%setup -q -n M2Crypto-0.33.0
+%setup -q -n M2Crypto-0.35.2
+cd %{_builddir}/M2Crypto-0.35.2
 %patch1 -p1
-%patch2 -p1
 
 %build
+## build_prepend content
+rm SWIG/_m2crypto_wrap.c
+## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1557075964
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1579209659
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -77,7 +86,7 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/M2Crypto
-cp LICENCE %{buildroot}/usr/share/package-licenses/M2Crypto/LICENCE
+cp %{_builddir}/M2Crypto-0.35.2/LICENCE %{buildroot}/usr/share/package-licenses/M2Crypto/6a8260c72527a57012ddf894d5e3357f25407375
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -88,7 +97,7 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/M2Crypto/LICENCE
+/usr/share/package-licenses/M2Crypto/6a8260c72527a57012ddf894d5e3357f25407375
 
 %files python
 %defattr(-,root,root,-)
