@@ -6,7 +6,7 @@
 #
 Name     : M2Crypto
 Version  : 0.35.2
-Release  : 8
+Release  : 9
 URL      : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz
 Source1  : https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz.asc
@@ -52,6 +52,7 @@ python components for the M2Crypto package.
 Summary: python3 components for the M2Crypto package.
 Group: Default
 Requires: python3-core
+Provides: pypi(m2crypto)
 
 %description python3
 python3 components for the M2Crypto package.
@@ -64,13 +65,14 @@ cd %{_builddir}/M2Crypto-0.35.2
 
 %build
 ## build_prepend content
+# Make sure this file is always generated at build time
 rm SWIG/_m2crypto_wrap.c
 ## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1579209659
+export SOURCE_DATE_EPOCH=1583701919
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
